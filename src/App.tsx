@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import WebcamLayout from "./layouts/WebcamLayout";
 
 function getTestData() {
   return JSON.parse(localStorage.getItem("testingData")).data; // on http://localhost:5173, If the old data was saved with a different port, it will not be able to retrieve the data
@@ -49,6 +50,7 @@ function App() {
   return (
     <>
       <div className="grid grid-cols-2 gap-4">
+        <WebcamLayout />
         <div className="p-4 instructions">
           <h2 className="text-2xl">Instructions</h2>
           <p>Press play first before doing poses</p>
