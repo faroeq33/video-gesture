@@ -6,7 +6,8 @@ function getTestData() {
 }
 
 function App() {
-  const { prediction, makePrediction } = usePrediction(
+  // ts-expect-error - Property 'ml5' does not exist on type 'Window & typeof globalThis'.
+  const { prediction, predictionCount, makePrediction } = usePrediction(
     getTestData()[10].vector
   );
 
@@ -39,6 +40,10 @@ function App() {
           <button className="p-4 bg-green-400" onClick={makePrediction}>
             Make Prediction
           </button>
+          <p>
+            PredictionCount{" "}
+            <span className="italic font-bold">{predictionCount}</span>{" "}
+          </p>
           <p>
             The prediction is{" "}
             <span className="italic font-bold">{prediction}</span>{" "}

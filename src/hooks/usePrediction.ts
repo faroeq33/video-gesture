@@ -9,26 +9,30 @@ export function usePrediction(input) {
     debug: true,
   });
 
-  const nn = useRef(network);
+  const neuralNetworkRef = useRef(network);
+  const queryCount = useRef(0);
 
   const makePrediction = () => {
-    nn.current.classify(input, (error, result: { label: never }[]) => {
-      const bestPrediction = result[0].label;
+    neuralNetworkRef.current.classify(
+      input,
+      (error, result: { label: never }[]) => {
+        const bestPrediction = result[0].label;
 
-      setPrediction(`${bestPrediction}`);
+        // neuralNetworkRef.current.prediction = bestPrediction;
+        setPrediction(bestPrediction);
 
-      console.log(bestPrediction);
-
-      if (error) console.error(error);
-    });
+        if (error) console.error(error);
+      }
+    );
   };
 
   useEffect(() => {
-    // @ts-expect-error - Property 'neuralNetwork' does not exist on type 'Window & typeof globalThis'.
-    console.log("ml5 version:", window.ml5.version);
+    queryCount.current += 1;
+    onPrediction();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [prediction, network]);
 
-    const network = nn.current;
-
+  function onPrediction() {
     const modelDetails = {
       model: "model/model.json",
       metadata: "model/model_meta.json",
@@ -37,10 +41,12 @@ export function usePrediction(input) {
 
     network.load(modelDetails, () => {
       console.log("model loaded");
-      nn.current = network;
+      neuralNetworkRef.current = network;
     });
-  }, []);
+  }
+
   return {
+    predictionCount: queryCount.current,
     prediction,
     makePrediction,
   };
