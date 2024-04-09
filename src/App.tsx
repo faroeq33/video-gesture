@@ -1,51 +1,14 @@
-import { useEffect, useRef, useState } from "react";
 import WebcamLayout from "./layouts/WebcamLayout";
+import { usePrediction } from "./hooks/usePrediction";
 
 function getTestData() {
   return JSON.parse(localStorage.getItem("testingData")).data; // on http://localhost:5173, If the old data was saved with a different port, it will not be able to retrieve the data
 }
 
 function App() {
-  const [prediction, setPrediction] = useState("");
-  // const [fullscreen, setFullscreen] = useState(false);
-
-  const nn = useRef(null);
-
-  const makePrediction = () => {
-    const input = getTestData()[10].vector;
-
-    nn.current.classify(input, (error, result: { label: never }[]) => {
-      const bestPrediction = result[0].label;
-
-      setPrediction(`I think this is ${bestPrediction}`);
-
-      console.log(bestPrediction);
-
-      if (error) console.error(error);
-    });
-  };
-
-  useEffect(() => {
-    // @ts-expect-error - Property 'neuralNetwork' does not exist on type 'Window & typeof globalThis'.
-    console.log("ml5 version:", window.ml5.version);
-
-    // @ts-expect-error - Property 'neuralNetwork' does not exist on type 'Window & typeof globalThis'.
-    const network = window.ml5.neuralNetwork({
-      task: "classification",
-      debug: true,
-    });
-
-    const modelDetails = {
-      model: "model/model.json",
-      metadata: "model/model_meta.json",
-      weights: "model/model.weights.bin",
-    };
-
-    network.load(modelDetails, () => {
-      console.log("model loaded");
-      nn.current = network;
-    });
-  }, []);
+  const { prediction, makePrediction } = usePrediction(
+    getTestData()[10].vector
+  );
 
   return (
     <>
