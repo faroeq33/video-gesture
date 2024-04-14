@@ -1,20 +1,25 @@
 import WebcamLayout from "./layouts/WebcamLayout";
 import { usePrediction } from "./hooks/usePrediction";
-
-function getTestData() {
-  return JSON.parse(localStorage.getItem("testingData")).data; // on http://localhost:5173, If the old data was saved with a different port, it will not be able to retrieve the data
-}
+import { useRef, useState } from "react";
+import { HandLandmarker } from "@mediapipe/tasks-vision";
+import { Coordinate } from "./utils/convertPosetoVector";
 
 function App() {
+  const landmarkerRef = useRef<HandLandmarker | null>(null);
+  const [poseData, setPoseData] = useState<Coordinate[][] | []>([]);
+
   // ts-expect-error - Property 'ml5' does not exist on type 'Window & typeof globalThis'.
-  const { prediction, predictionCount, makePrediction } = usePrediction(
-    getTestData()[10].vector
-  );
+  const { prediction } = usePrediction(poseData);
 
   return (
     <>
       <div className="grid grid-cols-2 gap-4">
-        <WebcamLayout />
+        {/* {JSON.stringify(poseData[0])} */}
+        <WebcamLayout
+          poseData={poseData}
+          setPoseData={setPoseData}
+          landmarkerRef={landmarkerRef}
+        />
         <div className="p-4 instructions">
           <h2 className="text-2xl">Instructions</h2>
           <p>Press play first before doing poses</p>
@@ -37,15 +42,11 @@ function App() {
         </div>
 
         <div className="p-4 prediction">
-          <button className="p-4 bg-green-400" onClick={makePrediction}>
-            Make Prediction
-          </button>
-          <p>
+          {/* <p>
             PredictionCount{" "}
             <span className="italic font-bold">{predictionCount}</span>{" "}
-          </p>
+          </p> */}
           <p>
-            The prediction is{" "}
             <span className="italic font-bold">{prediction}</span>{" "}
           </p>
         </div>

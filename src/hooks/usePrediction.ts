@@ -1,53 +1,52 @@
 import { useEffect, useRef, useState } from "react";
+import { Coordinate, convertPoseToVector } from "../utils/convertPosetoVector";
 
-export function usePrediction(input) {
+export function usePrediction(input: Coordinate[][] | []) {
   const [prediction, setPrediction] = useState("");
+  const [modelLoaded, setModelLoaded] = useState(false);
+
+  // console.log("input", input);
+  let convertedPose = [];
+
+  convertedPose = convertPoseToVector(input);
 
   // @ts-expect-error - Property 'neuralNetwork' does not exist on type 'Window & typeof globalThis'.
-  const network = window.ml5.neuralNetwork({
+  const nn = window.ml5.neuralNetwork({
     task: "classification",
     debug: true,
   });
 
-  const neuralNetworkRef = useRef(network);
+  const neuralNetworkRef = useRef(nn);
   const queryCount = useRef(0);
-
-  const makePrediction = () => {
-    neuralNetworkRef.current.classify(
-      input,
-      (error, result: { label: never }[]) => {
-        const bestPrediction = result[0].label;
-
-        // neuralNetworkRef.current.prediction = bestPrediction;
-        setPrediction(bestPrediction);
-
-        if (error) console.error(error);
-      }
-    );
-  };
 
   useEffect(() => {
     queryCount.current += 1;
-    onPrediction();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [prediction, network]);
-
-  function onPrediction() {
+    // if (!modelLoaded) {
     const modelDetails = {
       model: "model/model.json",
       metadata: "model/model_meta.json",
       weights: "model/model.weights.bin",
     };
 
-    network.load(modelDetails, () => {
-      console.log("model loaded");
-      neuralNetworkRef.current = network;
-    });
-  }
+    neuralNetworkRef.current.load(modelDetails, onModelLoaded);
+    setModelLoaded(true);
+    // }
+
+    function onModelLoaded() {
+      // console.log("input length", input.length);
+      if (input.length > 0) {
+        neuralNetworkRef.current.classify(convertedPose, (error, result) => {
+          // console.log("result", result[0].label);
+          setPrediction(result[0].label);
+        });
+      }
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [convertedPose]);
 
   return {
     predictionCount: queryCount.current,
     prediction,
-    makePrediction,
   };
 }
