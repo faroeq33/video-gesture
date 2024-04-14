@@ -9,8 +9,9 @@ function App() {
   const [poseData, setPoseData] = useState<Coordinate[][] | []>([]);
 
   // ts-expect-error - Property 'ml5' does not exist on type 'Window & typeof globalThis'.
-  const { prediction } = usePrediction(poseData);
-
+  const prediction = usePrediction(poseData, {
+    tolerance: 0.85,
+  });
   return (
     <>
       <div className="grid grid-cols-2 gap-4">
@@ -47,7 +48,7 @@ function App() {
             <span className="italic font-bold">{predictionCount}</span>{" "}
           </p> */}
           <p>
-            <span className="italic font-bold">{prediction}</span>{" "}
+            <span className="italic font-bold">{prediction.result}</span>{" "}
           </p>
         </div>
       </div>

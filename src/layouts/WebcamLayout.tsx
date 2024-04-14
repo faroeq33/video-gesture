@@ -47,6 +47,7 @@ function WebcamLayout({ landmarkerRef, poseData, setPoseData }) {
   useEffect(() => {
     createHandLandmarker()
       .then((handLandMarker) => {
+        // ensures that the handLandmarker is only created once
         if (!landmarkerRef.current) {
           landmarkerRef.current = handLandMarker;
           console.log("handlandmarker is created!");
