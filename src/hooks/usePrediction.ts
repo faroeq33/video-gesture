@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { Coordinate, convertPoseToVector } from "../utils/convertPosetoVector";
 
-export function usePrediction(
+export function useClassification(
   input: Coordinate[][] | [],
   options: { tolerance: number }
 ) {
-  const [result, setPrediction] = useState("");
+  const [result, setClassification] = useState("");
+  const [isClassifying, setIsClassifying] = useState(true);
 
   // console.log("input", input);
   let convertedPose = [];
@@ -32,11 +33,14 @@ export function usePrediction(
     neuralNetworkRef.current.load(modelDetails, onModelLoaded);
 
     function onModelLoaded() {
+      if (isClassifying === false) {
+        return;
+      }
       // console.log("input length", input.length);
 
       // I don't want to classify if there is no input
       if (input.length <= 0) {
-        setPrediction("");
+        setClassification("");
         return;
       }
       neuralNetworkRef.current.classify(
@@ -49,9 +53,9 @@ export function usePrediction(
           // console.log("prediction object", result);
 
           if (result[0].confidence > options.tolerance) {
-            setPrediction(result[0].label);
+            setClassification(result[0].label);
           } else {
-            setPrediction("");
+            setClassification("");
           }
         }
       );
@@ -61,8 +65,19 @@ export function usePrediction(
   }, [convertedPose]);
 
   return {
-    isPredicting: input.length > 0,
+    isClassifying,
     predictionCount: queryCount.current,
+    toggle: () => {
+      if (input.length <= 0) {
+        return;
+      }
+      setIsClassifying(!isClassifying);
+      // if (neuralNetworkRef.current.isPredicting) {
+      //   neuralNetworkRef.current.stopPredicting();
+      // } else {
+      //   neuralNetworkRef.current.predict(convertedPose);
+      // }
+    },
     result,
   };
 }

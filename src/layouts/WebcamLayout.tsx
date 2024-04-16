@@ -4,7 +4,8 @@ import { DrawingUtils, HandLandmarker } from "@mediapipe/tasks-vision";
 import Webcam from "react-webcam";
 import createHandLandmarker from "../utils/createHandLandmarker";
 
-function WebcamLayout({ landmarkerRef, poseData, setPoseData }) {
+function WebcamLayout({ poseData, setPoseData }) {
+  const landmarkerRef = useRef<HandLandmarker | null>(null);
   const drawingUtilsRef = useRef(null);
 
   const videoConstraints = {
@@ -59,7 +60,7 @@ function WebcamLayout({ landmarkerRef, poseData, setPoseData }) {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [landmarkerRef]);
 
   const capture = async () => {
     if (
@@ -70,7 +71,7 @@ function WebcamLayout({ landmarkerRef, poseData, setPoseData }) {
       const video = webcamRef.current.video;
       if (video.currentTime > 0) {
         const result = await landmarkerRef.current.detectForVideo(
-          webcamRef.current.video,
+          video,
           performance.now()
         );
         if (result.landmarks) {

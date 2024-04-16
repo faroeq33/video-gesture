@@ -1,26 +1,22 @@
 import WebcamLayout from "./layouts/WebcamLayout";
-import { usePrediction } from "./hooks/usePrediction";
-import { useRef, useState } from "react";
-import { HandLandmarker } from "@mediapipe/tasks-vision";
+import { useClassification } from "./hooks/usePrediction";
+import { useState } from "react";
 import { Coordinate } from "./utils/convertPosetoVector";
+import MyButton from "./components/MyButton";
 
 function App() {
-  const landmarkerRef = useRef<HandLandmarker | null>(null);
   const [poseData, setPoseData] = useState<Coordinate[][] | []>([]);
 
   // ts-expect-error - Property 'ml5' does not exist on type 'Window & typeof globalThis'.
-  const prediction = usePrediction(poseData, {
-    tolerance: 0.85,
+  const classification = useClassification(poseData, {
+    tolerance: 0.8,
   });
+
   return (
     <>
       <div className="grid grid-cols-2 gap-4">
         {/* {JSON.stringify(poseData[0])} */}
-        <WebcamLayout
-          poseData={poseData}
-          setPoseData={setPoseData}
-          landmarkerRef={landmarkerRef}
-        />
+        <WebcamLayout poseData={poseData} setPoseData={setPoseData} />
         <div className="p-4 instructions">
           <h2 className="text-2xl">Instructions</h2>
           <p>Press play first before doing poses</p>
@@ -28,6 +24,7 @@ function App() {
           <p> Peacesign = fullscreen</p>
           <p> finger in front of the mouth = mute</p>
         </div>
+        {/*
         <div className="p-4 card">
           <h1 className="text-3xl font-bold underline">Video gestures</h1>
           <>
@@ -41,14 +38,26 @@ function App() {
             />
           </>
         </div>
+        */}
 
         <div className="p-4 prediction">
           {/* <p>
             PredictionCount{" "}
             <span className="italic font-bold">{predictionCount}</span>{" "}
           </p> */}
+          <MyButton
+            onClick={() => {
+              classification.toggle();
+            }}
+          >
+            {classification.isClassifying
+              ? "Stop classifying"
+              : "Start  classifying"}
+          </MyButton>
           <p>
-            <span className="italic font-bold">{prediction.result}</span>{" "}
+            <span className="italic font-bold">
+              {classification.isClassifying ? classification.result : ""}
+            </span>
           </p>
         </div>
       </div>

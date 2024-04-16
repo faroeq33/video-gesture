@@ -13,14 +13,6 @@ const createHandLandmarker = async () => {
     numHands: 1,
   });
   return handLandmarker;
-  //   if (!landmarkerRef.current) {
-  //     console.log("something");
-  //     landmarkerRef.current = handLandmarker;
-  //     console.log("handlandmarker is created!");
-  //   }
-  // start capturing - zie hieronder
 };
 
 export default createHandLandmarker;
-// write so it can only make 1 drawing util instance
-// drawingUtilsRef.current = new DrawingUtils(ctx);
