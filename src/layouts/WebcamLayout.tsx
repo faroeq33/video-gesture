@@ -16,6 +16,7 @@ function WebcamLayout({ poseData, setPoseData }) {
 
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
+  let animationFrameId; // For
 
   useEffect(() => {
     const ctx = canvasRef.current.getContext("2d");
@@ -60,9 +61,12 @@ function WebcamLayout({ poseData, setPoseData }) {
       .catch((error) => {
         console.log(error);
       });
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+    };
   }, [landmarkerRef]);
 
-  const capture = async () => {
+  async function capture() {
     if (
       webcamRef.current &&
       landmarkerRef.current &&
@@ -79,8 +83,8 @@ function WebcamLayout({ poseData, setPoseData }) {
         }
       }
     }
-    requestAnimationFrame(capture);
-  };
+    animationFrameId = requestAnimationFrame(capture);
+  }
   return (
     <>
       <section className="videosection">
