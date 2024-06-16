@@ -26,8 +26,27 @@ function VideoPlayer() {
 
   /* The <iframe> (and video player) will replace this <div> tag.*/
 
-  const muteVideo = () => {
+  const mute = () => {
     player.mute();
+  };
+
+  const fullScreen = () => {
+    const iframe = player.getIframe();
+
+    const requestFullScreen =
+      // @ts-expect-error - Property 'requestFullScreen' does not exist on type 'HTMLIFrameElement'.
+      iframe.requestFullScreen ||
+      // @ts-expect-error - Property 'requestFullScreen' does not exist on type 'HTMLIFrameElement'.
+      iframe.mozRequestFullScreen ||
+      // @ts-expect-error - Property 'requestFullScreen' does not exist on type 'HTMLIFrameElement'.
+      iframe.webkitRequestFullScreen;
+    if (requestFullScreen) {
+      requestFullScreen.bind(iframe)();
+    }
+  };
+
+  const pauseVideo = () => {
+    player.pauseVideo();
   };
 
   return (
@@ -39,7 +58,8 @@ function VideoPlayer() {
         opts={options}
         onReady={onPlayerReady}
       />{" "}
-      <div onClick={muteVideo}>mute video</div>;
+      {/* <MyButton onClick={mute}>mute</MyButton>
+      <MyButton onClick={fullScreen}>fullscreen</MyButton> */}
     </>
   );
 }
