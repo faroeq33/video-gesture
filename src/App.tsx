@@ -1,5 +1,5 @@
 import WebcamLayout from "./layouts/WebcamLayout";
-// import { useClassification } from "./hooks/useClassification";
+import { useClassification } from "./hooks/useClassification";
 import { useState } from "react";
 import { Coordinate } from "./utils/convertPosetoVector";
 import MyButton from "./components/buttons/MyButton";
@@ -9,7 +9,6 @@ function handlePoseEvent(classification: string) {
   switch (classification) {
     case "pause":
       console.log("thing paused");
-
       // fire pause event
       break;
 
@@ -22,9 +21,9 @@ function App() {
   const [poseData, setPoseData] = useState<Coordinate[][] | []>([]);
 
   // ts-expect-error - Property 'ml5' does not exist on type 'Window & typeof globalThis'.
-  // const classification = useClassification([], {
-  //   tolerance: 0.8,
-  // });
+  const classification = useClassification(poseData, {
+    tolerance: 0.8,
+  });
 
   // console.log("prediction count", classification.predictionCount);
 
@@ -44,24 +43,7 @@ function App() {
   return (
     <>
       <div className="grid grid-cols-2 gap-4">
-        <VideoPlayer />
         {/* {JSON.stringify(poseData[0])} */}
-        <p>
-          <span className="italic font-bold">
-            {/* {classification.classification ?? "No classification"} */}
-          </span>
-        </p>
-        <WebcamLayout poseData={poseData} setPoseData={setPoseData} />
-        <div className="p-4 instructions">
-          <h2 className="text-2xl">Instructions</h2>
-          <p>Press play first before doing poses</p>
-          <p> Open your hand = pausing </p>
-          <p> Peacesign = fullscreen</p>
-          <p> finger in front of the mouth = mute</p>
-        </div>
-        {/*
-
-        */}
         <div className="p-4 prediction">
           {/* <p>
             PredictionCount{" "}
@@ -69,15 +51,32 @@ function App() {
           </p> */}
           <MyButton
             onClick={() => {
-              // classification.toggle();
+              classification.toggle();
               console.log("pressed");
             }}
           >
-            {/* {classification.isClassifying
+            {classification.isClassifying
               ? "Stop classifying"
-              : "Start  classifying"} */}
+              : "Start  classifying"}
           </MyButton>
         </div>
+        <div className="text-4xl text-black bg-pink-400 classification display">
+          <span className="italic font-bold">
+            {classification.classification || "No poses recognized"}
+          </span>
+        </div>
+        <div className="p-4 instructions">
+          <WebcamLayout poseData={poseData} setPoseData={setPoseData} />
+          <h2 className="text-2xl">Instructions</h2>
+          <p>Press play first before doing poses</p>
+          <p>Open your hand = pausing </p>
+          <p>Peacesign = fullscreen</p>
+          <p>Finger in front of the mouth = mute</p>
+        </div>
+        {/*
+
+        */}
+        <VideoPlayer />
       </div>
     </>
   );
