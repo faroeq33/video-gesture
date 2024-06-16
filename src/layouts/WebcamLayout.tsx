@@ -1,8 +1,9 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { DrawingUtils, HandLandmarker } from "@mediapipe/tasks-vision";
 
 import Webcam from "react-webcam";
 import createHandLandmarker from "../utils/createHandLandmarker";
+import Canvas from "../components/Canvas";
 
 function WebcamLayout({ poseData, setPoseData }) {
   const landmarkerRef = useRef<HandLandmarker | null>(null);
@@ -11,23 +12,26 @@ function WebcamLayout({ poseData, setPoseData }) {
   const videoConstraints = {
     width: 480,
     height: 270,
-    facingMode: "user",
+    // facingMode: "user",
   };
 
-  const webcamRef = useRef(null);
   const canvasRef = useRef(null);
-  let animationFrameId; // For
+  const webcamRef = useRef(null);
 
-  useEffect(() => {
-    const ctx = canvasRef.current.getContext("2d");
+  let animationFrameId; // for canceling the animation frame
+
+  const setup = () => {
+    const canvasContext = canvasRef.current.getContext("2d");
     if (!drawingUtilsRef.current) {
-      drawingUtilsRef.current = new DrawingUtils(ctx);
+      drawingUtilsRef.current = new DrawingUtils(canvasContext);
       // console.log("DrawingUtils created");
       // console.log(drawingUtilsRef.current);
     }
-  }, []);
 
-  useEffect(() => {
+    resizeCanvasToDisplaySize(canvasRef.current);
+  };
+
+  const draw = useCallback(() => {
     const canvasContext = canvasRef.current.getContext("2d");
     if (drawingUtilsRef.current) {
       canvasContext.clearRect(0, 0, 480, 270);
@@ -47,6 +51,14 @@ function WebcamLayout({ poseData, setPoseData }) {
   }, [poseData]);
 
   useEffect(() => {
+    setup();
+  }, []);
+
+  useEffect(() => {
+    // draw();
+  }, [poseData, draw]);
+
+  useEffect(() => {
     createHandLandmarker()
       .then((handLandMarker) => {
         // ensures that the handLandmarker is only created once
@@ -64,8 +76,20 @@ function WebcamLayout({ poseData, setPoseData }) {
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-  }, [landmarkerRef]);
+  }, [landmarkerRef, animationFrameId]);
 
+  function resizeCanvasToDisplaySize(canvas) {
+    const { width, height } = canvas.getBoundingClientRect();
+
+    if (canvas.width !== width || canvas.height !== height) {
+      canvas.width = width;
+      canvas.height = height;
+      return true; // here you can return some usefull information like delta width and delta height instead of just true
+      // this information can be used in the next redraw...
+    }
+
+    return false;
+  }
   async function capture() {
     if (
       webcamRef.current &&
@@ -83,21 +107,21 @@ function WebcamLayout({ poseData, setPoseData }) {
         }
       }
     }
-    animationFrameId = requestAnimationFrame(capture);
+    animationFrameId = window.requestAnimationFrame(capture);
   }
   return (
     <>
       <section className="videosection">
         <Webcam
-          width={480}
-          height={270}
+          width={videoConstraints.width}
+          height={videoConstraints.height}
           mirrored={true}
           id="webcam"
           audio={false}
           videoConstraints={videoConstraints}
           ref={webcamRef}
         />
-        <canvas ref={canvasRef} width={480} height={270}></canvas>
+        <Canvas ref={canvasRef} {...videoConstraints}></Canvas>
       </section>
     </>
   );
