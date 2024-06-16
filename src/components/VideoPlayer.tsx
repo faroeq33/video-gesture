@@ -2,7 +2,7 @@
 import { useState } from "react";
 import YouTube, { YouTubePlayer, YouTubeProps } from "react-youtube";
 
-function VideoPlayer() {
+function VideoPlayer(props: { classification: string }) {
   //   const [isReady, setIsReady] = useState(false);
   // console.log(YouTube.PlayerState);
   const [player, setPlayer] = useState<YouTubePlayer>(null);
@@ -30,24 +30,53 @@ function VideoPlayer() {
     player.mute();
   };
 
-  const fullScreen = () => {
-    const iframe = player.getIframe();
+  // const fullScreen = () => {
+  //   const iframe = player.getIframe();
 
-    const requestFullScreen =
-      // @ts-expect-error - Property 'requestFullScreen' does not exist on type 'HTMLIFrameElement'.
-      iframe.requestFullScreen ||
-      // @ts-expect-error - Property 'requestFullScreen' does not exist on type 'HTMLIFrameElement'.
-      iframe.mozRequestFullScreen ||
-      // @ts-expect-error - Property 'requestFullScreen' does not exist on type 'HTMLIFrameElement'.
-      iframe.webkitRequestFullScreen;
-    if (requestFullScreen) {
-      requestFullScreen.bind(iframe)();
-    }
-  };
+  //   const requestFullScreen =
+  //     // @ts-expect-error - Property 'requestFullScreen' does not exist on type 'HTMLIFrameElement'.
+  //     iframe.requestFullScreen ||
+  //     // @ts-expect-error - Property 'requestFullScreen' does not exist on type 'HTMLIFrameElement'.
+  //     iframe.mozRequestFullScreen ||
+  //     // @ts-expect-error - Property 'requestFullScreen' does not exist on type 'HTMLIFrameElement'.
+  //     iframe.webkitRequestFullScreen;
+  //   if (requestFullScreen) {
+  //     requestFullScreen.bind(iframe)();
+  //   }
+  // };
 
   const pauseVideo = () => {
     player.pauseVideo();
   };
+
+  function handlePoseEvent(classification: string) {
+    switch (classification) {
+      case "mute":
+        console.log("thing muted");
+        mute();
+        break;
+      case "fullscreen":
+        console.log(
+          "not implemented yet, because of security reasons, see projects readme"
+        );
+
+        // fullScreen();
+        break;
+      // fire pause event
+      case "pause":
+        console.log("thing paused");
+        pauseVideo();
+        // fire pause event
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  if (props.classification) {
+    handlePoseEvent(props.classification);
+  }
 
   return (
     <>

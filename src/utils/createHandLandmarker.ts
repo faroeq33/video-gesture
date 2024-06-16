@@ -9,6 +9,7 @@ const createHandLandmarker = async () => {
       modelAssetPath: `https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task`,
       delegate: "GPU",
     },
+    minHandDetectionConfidence: 0.8,
     runningMode: "VIDEO",
     numHands: 1,
   });

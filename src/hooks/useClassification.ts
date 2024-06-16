@@ -43,13 +43,11 @@ export function useClassification(
     if (isClassifying === false) {
       return;
     }
-    // console.log("input length", input.length);
 
-    // I don't want to classify if there is no input
-    /*if (input.length <= 0) {
-      // setClassification("");
+    if (convertedPose.length <= 0) {
       return;
-    }*/
+    }
+
     setIsClassifying(true);
     neuralNetworkRef.current.classify(
       convertedPose,
