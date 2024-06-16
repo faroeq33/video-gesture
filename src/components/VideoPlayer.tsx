@@ -10,7 +10,7 @@ function VideoPlayer() {
   const onPlayerReady: YouTubeProps["onReady"] = (event) => {
     event.target.pauseVideo();
     setPlayer(event.target);
-    console.log("shits ready");
+    console.log("Video is ready");
     // access to player in all event handlers via event.target
   };
 
