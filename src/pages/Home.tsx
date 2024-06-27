@@ -15,16 +15,11 @@ function Home() {
 
   return (
     <div className="grid grid-cols-2 gap-4">
-      {/* {JSON.stringify(poseData[0])} */}
       <div className="p-4 prediction">
-        {/* <p>
-            PredictionCount{" "}
-            <span className="italic font-bold">{predictionCount}</span>{" "}
-          </p> */}
         <MyButton
           onClick={() => {
             classification.toggle();
-            console.log("pressed");
+            console.log("toggled classification");
           }}
         >
           {classification.isClassifying

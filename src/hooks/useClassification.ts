@@ -23,7 +23,7 @@ export function useClassification(
   useEffect(() => {
     // @ts-expect-error - Property 'ml5' does not exist on type 'Window & typeof globalThis'.
     const ml5 = window.ml5;
-    ml5.setBackend("webgl");
+    ml5.setBackend("webgl"); // Required for running on the browser
 
     nn.current = ml5.neuralNetwork({
       task: "classification",
@@ -59,33 +59,22 @@ export function useClassification(
       try {
         setIsClassifying(true);
 
-        nn.current.classify(
-          convertedPose,
-          (error, result: predictionResult) => {
-            if (error) {
-              console.log("error", error);
-            }
-            console.log(result);
-            return;
-            // console.log("result", result[0].label);
-            // console.log("prediction object", result);
+        nn.current.classify(convertedPose, (result: predictionResult) => {
+          // console.log("result", result[0].label);
+          // console.log("prediction object", result);
 
-            if (result[0].confidence > options.tolerance) {
-              setClassification(result[0].label);
-            }
+          if (result[0].confidence > options.tolerance) {
+            setClassification(result[0].label);
           }
-        );
+        });
       } catch (error) {
         console.log("error", error);
       }
     }
   }, [input, isClassifying, options.tolerance]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-
   return {
     isClassifying,
-    // predictionCount: queryCount.current,
     toggle: () => {
       setIsClassifying(!isClassifying);
     },
