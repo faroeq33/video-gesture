@@ -8,6 +8,7 @@ import Canvas from "../components/Canvas";
 function WebcamLayout({ poseData, setPoseData }) {
   const landmarkerRef = useRef<HandLandmarker | null>(null);
   const drawingUtilsRef = useRef(null);
+  const animationFrameId = useRef(null); // for canceling the animation frame
 
   const videoConstraints = {
     width: 480,
@@ -18,9 +19,8 @@ function WebcamLayout({ poseData, setPoseData }) {
   const canvasRef = useRef(null);
   const webcamRef = useRef(null);
 
-  let animationFrameId; // for canceling the animation frame
-
-  const setup = () => {
+  // Setup the canvas
+  useEffect(() => {
     const canvasContext = canvasRef.current.getContext("2d");
     if (!drawingUtilsRef.current) {
       drawingUtilsRef.current = new DrawingUtils(canvasContext);
@@ -29,9 +29,10 @@ function WebcamLayout({ poseData, setPoseData }) {
     }
 
     resizeCanvasToDisplaySize(canvasRef.current);
-  };
+  }, []);
 
-  const draw = useCallback(() => {
+  // Logic for drawing
+  useEffect(() => {
     const canvasContext = canvasRef.current.getContext("2d");
     if (drawingUtilsRef.current) {
       canvasContext.clearRect(0, 0, 480, 270);
@@ -50,13 +51,25 @@ function WebcamLayout({ poseData, setPoseData }) {
     }
   }, [poseData]);
 
-  useEffect(() => {
-    setup();
-  }, []);
-
-  useEffect(() => {
-    // draw();
-  }, [poseData, draw]);
+  const capture = useCallback(async () => {
+    if (
+      webcamRef.current &&
+      landmarkerRef.current &&
+      webcamRef.current.getCanvas()
+    ) {
+      const video = webcamRef.current.video;
+      if (video.currentTime > 0) {
+        const result = await landmarkerRef.current.detectForVideo(
+          video,
+          performance.now()
+        );
+        if (result.landmarks) {
+          setPoseData(result.landmarks);
+        }
+      }
+    }
+    animationFrameId.current = window.requestAnimationFrame(capture);
+  }, [webcamRef, landmarkerRef, setPoseData]);
 
   useEffect(() => {
     createHandLandmarker()
@@ -74,9 +87,9 @@ function WebcamLayout({ poseData, setPoseData }) {
         console.log(error);
       });
     return () => {
-      cancelAnimationFrame(animationFrameId);
+      cancelAnimationFrame(animationFrameId.current);
     };
-  }, [landmarkerRef, animationFrameId]);
+  }, [landmarkerRef, capture]);
 
   function resizeCanvasToDisplaySize(canvas) {
     const { width, height } = canvas.getBoundingClientRect();
@@ -90,25 +103,7 @@ function WebcamLayout({ poseData, setPoseData }) {
 
     return false;
   }
-  async function capture() {
-    if (
-      webcamRef.current &&
-      landmarkerRef.current &&
-      webcamRef.current.getCanvas()
-    ) {
-      const video = webcamRef.current.video;
-      if (video.currentTime > 0) {
-        const result = await landmarkerRef.current.detectForVideo(
-          video,
-          performance.now()
-        );
-        if (result.landmarks) {
-          setPoseData(result.landmarks);
-        }
-      }
-    }
-    animationFrameId = window.requestAnimationFrame(capture);
-  }
+
   return (
     <>
       <section className="videosection">

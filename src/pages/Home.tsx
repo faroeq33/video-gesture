@@ -1,7 +1,8 @@
-import VideoPlayer from "../components/VideoPlayer";
+// import VideoPlayer from "../components/VideoPlayer";
 import MyButton from "../components/buttons/MyButton";
 import { usePoseContext } from "../context/PoseContext";
 import { useClassification } from "../hooks/useClassification";
+// import { useClassification } from "../hooks/useClassification";
 import WebcamLayout from "../layouts/WebcamLayout";
 
 function Home() {
@@ -45,7 +46,7 @@ function Home() {
         <p>Finger in front of the mouth = mute</p>
       </div>
 
-      <VideoPlayer classification={classification.classification} />
+      {/* <VideoPlayer classification={classification.classification} /> */}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Coordinate, convertPoseToVector } from "../utils/convertPosetoVector";
 import { ClassificationOptions, predictionResult } from "../types";
 
@@ -13,63 +13,79 @@ export function useClassification(
   const [classification, setClassification] = useState(
     options.initClassification ?? ""
   ); // Does this classification need to be state?
+
   const [isClassifying, setIsClassifying] = useState(
-    options.startClassifying ?? false
+    options.startClassifying || false
   );
-  // console.log("input", input);
-  let convertedPose = [];
 
-  convertedPose = convertPoseToVector(input);
+  const nn = useRef(null);
 
-  // @ts-expect-error - Property 'neuralNetwork' does not exist on type 'Window & typeof globalThis'.
-  const nn = window.ml5.neuralNetwork({
-    task: "classification",
-    debug: true,
-  });
+  useEffect(() => {
+    // @ts-expect-error - Property 'ml5' does not exist on type 'Window & typeof globalThis'.
+    const ml5 = window.ml5;
+    ml5.setBackend("webgl");
 
-  const neuralNetworkRef = useRef(nn);
-  const queryCount = useRef(0);
+    nn.current = ml5.neuralNetwork({
+      task: "classification",
+      debug: true,
+    });
+  }, []);
 
-  const modelDetails = {
-    model: "model/model.json",
-    metadata: "model/model_meta.json",
-    weights: "model/model.weights.bin",
-  };
+  useEffect(() => {
+    let convertedPose = [];
+    convertedPose = convertPoseToVector(input);
 
-  queryCount.current += 1;
-  neuralNetworkRef.current.load(modelDetails, onModelLoaded);
+    // const network = ml5.neuralNetwork({
+    //   task: "classification",
+    //   debug: true,
+    // });
 
-  function onModelLoaded() {
-    if (isClassifying === false) {
-      return;
-    }
+    const modelDetails = {
+      model: "model/model.json",
+      metadata: "model/model_meta.json",
+      weights: "model/model.weights.bin",
+    };
 
-    if (convertedPose.length <= 0) {
-      return;
-    }
+    nn.current.load(modelDetails, onModelLoaded);
 
-    setIsClassifying(true);
-    neuralNetworkRef.current.classify(
-      convertedPose,
-      (error, result: predictionResult) => {
-        if (error) {
-          console.log("error", error);
-        }
-        // console.log("result", result[0].label);
-        // console.log("prediction object", result);
-
-        if (result[0].confidence > options.tolerance) {
-          setClassification(result[0].label);
-        }
+    function onModelLoaded() {
+      if (isClassifying === false) {
+        return;
       }
-    );
-  }
+
+      if (convertedPose.length <= 0) {
+        return;
+      }
+      try {
+        setIsClassifying(true);
+
+        nn.current.classify(
+          convertedPose,
+          (error, result: predictionResult) => {
+            if (error) {
+              console.log("error", error);
+            }
+            console.log(result);
+            return;
+            // console.log("result", result[0].label);
+            // console.log("prediction object", result);
+
+            if (result[0].confidence > options.tolerance) {
+              setClassification(result[0].label);
+            }
+          }
+        );
+      } catch (error) {
+        console.log("error", error);
+      }
+    }
+  }, [input, isClassifying, options.tolerance]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
 
   return {
     isClassifying,
-    predictionCount: queryCount.current,
+    // predictionCount: queryCount.current,
     toggle: () => {
       setIsClassifying(!isClassifying);
     },
