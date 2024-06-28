@@ -3,7 +3,7 @@ import MyButton from "../components/buttons/MyButton";
 import { usePoseContext } from "../context/PoseContext";
 import { useClassification } from "../hooks/useClassification";
 // import { useClassification } from "../hooks/useClassification";
-import WebcamLayout from "../layouts/WebcamLayout";
+import WebcamLayout from "../components/layouts/WebcamLayout";
 
 function Home() {
   const { poseData, setPoseData } = usePoseContext();
