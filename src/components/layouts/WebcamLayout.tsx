@@ -1,14 +1,26 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { DrawingUtils, HandLandmarker } from "@mediapipe/tasks-vision";
 
 import Webcam from "react-webcam";
-import createHandLandmarker from "../utils/createHandLandmarker";
-import Canvas from "../components/Canvas";
+import createHandLandmarker from "../../utils/createHandLandmarker";
+import Canvas from "../Canvas";
+import { Coordinate } from "../../utils/convertPosetoVector";
 
-function WebcamLayout({ poseData, setPoseData }) {
+function WebcamLayout({
+  poseData,
+  setPoseData,
+}: {
+  poseData: Coordinate[][] | [];
+  setPoseData: React.Dispatch<React.SetStateAction<Coordinate[][] | []>>;
+}) {
   const landmarkerRef = useRef<HandLandmarker | null>(null);
   const drawingUtilsRef = useRef(null);
   const animationFrameId = useRef(null); // for canceling the animation frame
+  const [camera, setCamera] = useState(true);
+
+  const toggleCamera = () => {
+    setCamera((prevCamera) => !prevCamera);
+  };
 
   const videoConstraints = {
     width: 480,
@@ -33,22 +45,22 @@ function WebcamLayout({ poseData, setPoseData }) {
 
   // Logic for drawing
   useEffect(() => {
-    const canvasContext = canvasRef.current.getContext("2d");
-    if (drawingUtilsRef.current) {
-      canvasContext.clearRect(0, 0, 480, 270);
-      for (const hand of poseData) {
-        drawingUtilsRef.current.drawConnectors(
-          hand,
-          HandLandmarker.HAND_CONNECTIONS,
-          { color: "#00FF00", lineWidth: 3 }
-        );
-        drawingUtilsRef.current.drawLandmarks(hand, {
-          radius: 2,
-          color: "#FF0000",
-          lineWidth: 2,
-        });
-      }
-    }
+    // const canvasContext = canvasRef.current.getContext("2d");
+    // if (drawingUtilsRef.current) {
+    //   canvasContext.clearRect(0, 0, 480, 270);
+    //   for (const hand of poseData) {
+    //     drawingUtilsRef.current.drawConnectors(
+    //       hand,
+    //       HandLandmarker.HAND_CONNECTIONS,
+    //       { color: "#00FF00", lineWidth: 3 }
+    //     );
+    //     drawingUtilsRef.current.drawLandmarks(hand, {
+    //       radius: 2,
+    //       color: "#FF0000",
+    //       lineWidth: 2,
+    //     });
+    //   }
+    // }
   }, [poseData]);
 
   const capture = useCallback(async () => {
@@ -107,6 +119,7 @@ function WebcamLayout({ poseData, setPoseData }) {
   return (
     <>
       <section className="videosection">
+        <button>toggle camera</button>
         <Webcam
           width={videoConstraints.width}
           height={videoConstraints.height}
