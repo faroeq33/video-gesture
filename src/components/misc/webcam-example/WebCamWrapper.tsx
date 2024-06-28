@@ -1,44 +1,56 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./Webcam.css";
 import Webcam from "react-webcam";
-import { FilesetResolver, HandLandmarker } from "@mediapipe/tasks-vision";
-import Coordinates from "./Coordinates";
+import {
+  DrawingUtils,
+  FilesetResolver,
+  HandLandmarker,
+} from "@mediapipe/tasks-vision";
+// import Coordinates from "./Coordinates";
 import { Coordinate } from "./WebcamTypes";
 
 export default function WebcamWrapper() {
   const [poseData, setPoseData] = useState<Coordinate[][] | []>([]);
 
-  const webcamRef = useRef(null);
-  const canvasRef = useRef(null);
+  const webcamRef = useRef<Webcam | null>(null); // The type for webcamRef may be wrong
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  const landmarkerRef = useRef(null);
+  const landmarkerRef = useRef<HandLandmarker | null>(null);
+
+  const drawingUtilsRef = useRef<DrawingUtils | null>(null); // The type for DrawingUtils may be wrong
 
   const videoConstraints = {
     width: 480,
     height: 270,
-    facingMode: "user",
+    // facingMode: "user",
   };
-  // laad het landmarker model in de landmarkerRef
+
+  // capture de webcam stream en ontvang posedata
   const capture = useCallback(async () => {
+    // Check if the webcamRef, landmarkerRef, and webcamRef.video are available and if the current video time is greater than 0
     if (
-      webcamRef.current &&
-      landmarkerRef.current &&
-      webcamRef.current.getCanvas()
+      !webcamRef.current ||
+      !landmarkerRef.current ||
+      !webcamRef.current.video ||
+      webcamRef.current.video.currentTime <= 0
     ) {
-      const video = webcamRef.current.video;
-      if (video.currentTime > 0) {
-        const result = await landmarkerRef.current.detectForVideo(
-          video,
-          performance.now()
-        );
-        if (result.landmarks) {
-          setPoseData(result.landmarks);
-        }
-      }
+      requestAnimationFrame(capture);
+      return;
     }
+
+    const result = await landmarkerRef.current.detectForVideo(
+      webcamRef.current.video,
+      performance.now()
+    );
+
+    if (result.landmarks) {
+      setPoseData(result.landmarks);
+    }
+
     requestAnimationFrame(capture);
   }, [webcamRef, landmarkerRef, setPoseData]);
 
+  // Laad het landmarker model in de landmarkerRef
   useEffect(() => {
     const createHandLandmarker = async () => {
       const vision = await FilesetResolver.forVisionTasks(
@@ -56,23 +68,43 @@ export default function WebcamWrapper() {
       landmarkerRef.current = handLandmarker;
       console.log("handlandmarker is created!");
       // start capturing - zie hieronder
-      // capture()
+      capture();
     };
     createHandLandmarker();
-    capture();
+    // capture();
   }, [capture]);
 
-  // capture de webcam stream en ontvang posedata
+  // Laad de canvas context in de drawingUtilsRef
+  useEffect(() => {
+    const ctx = canvasRef.current.getContext("2d");
+    drawingUtilsRef.current = new DrawingUtils(ctx);
+  }, []);
+
   // als de pose state is veranderd wordt deze code aangeroepen
   useEffect(() => {
     //...
-  }, [poseData]);
+    const ctx = canvasRef.current.getContext("2d");
+    if (drawingUtilsRef.current) {
+      ctx.clearRect(0, 0, videoConstraints.width, videoConstraints.height);
+      for (const hand of poseData) {
+        drawingUtilsRef.current.drawConnectors(
+          hand,
+          HandLandmarker.HAND_CONNECTIONS,
+          { color: "#00FF00", lineWidth: 2 }
+        );
+        drawingUtilsRef.current.drawLandmarks(hand, {
+          radius: 2,
+          color: "#FF0000",
+          lineWidth: 2,
+        });
+      }
+    }
+  }, [poseData, videoConstraints.width, videoConstraints.height]);
 
   return (
     <section className="videosection">
       <Webcam
-        width={videoConstraints.width}
-        height={videoConstraints.height}
+        {...videoConstraints} // otherwhise the video will be of the wrong size
         mirrored={true}
         id="webcam"
         audio={false}
@@ -80,7 +112,7 @@ export default function WebcamWrapper() {
         ref={webcamRef}
       />
       <canvas ref={canvasRef} {...videoConstraints}></canvas>
-      <Coordinates poseData={poseData} />
+      {/* <Coordinates poseData={poseData} /> */}
     </section>
   );
 }
