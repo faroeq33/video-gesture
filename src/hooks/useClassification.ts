@@ -22,9 +22,10 @@ export function useClassification(
 
   useEffect(() => {
     // @ts-expect-error - Property 'ml5' does not exist on type 'Window & typeof globalThis'.
-    const ml5 = window.ml5;
+    // const ml5 = window.ml5;
     ml5.setBackend("webgl"); // Required for running on the browser
 
+    // @ts-expect-error - Property 'ml5' does not exist on type 'Window & typeof globalThis'.
     nn.current = ml5.neuralNetwork({
       task: "classification",
       debug: true,
