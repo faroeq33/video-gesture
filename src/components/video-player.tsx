@@ -1,14 +1,14 @@
-import { useState } from "react";
+import { useRef } from "react";
 import YouTube, { YouTubePlayer, YouTubeProps } from "react-youtube";
 import ActionButton from "@/components/action-button";
 
 export default function VideoPlayer(props: { classification: string }) {
   //   const [isReady, setIsReady] = useState(false);
   // console.log(YouTube.PlayerState);
-  const [player, setPlayer] = useState<YouTubePlayer>(null);
+  const player = useRef<YouTubePlayer>(null);
 
   const onPlayerReady: YouTubeProps["onReady"] = (event) => {
-    setPlayer(event.target);
+    player.current = event.target;
     console.log("Video is ready");
     // access to player in all event handlers via event.target
   };
@@ -26,11 +26,11 @@ export default function VideoPlayer(props: { classification: string }) {
   /* The <iframe> (and video player) will replace this <div> tag.*/
 
   const mute = () => {
-    player.mute();
+    player.current.mute();
   };
 
   const fullScreen = () => {
-    const iframe = player.getIframe();
+    const iframe = player.current.getIframe();
 
     const requestFullScreen =
       // @ts-expect-error - Property 'requestFullScreen' does not exist on type 'HTMLIFrameElement'.
@@ -45,10 +45,11 @@ export default function VideoPlayer(props: { classification: string }) {
   };
 
   const pauseVideo = () => {
-    player.pauseVideo();
+    player.current.pauseVideo();
   };
 
   function handlePoseEvent(classification: string) {
+    // Maybe i can apply debounce/throttle here
     switch (classification) {
       case "mute":
         // console.log("thing muted");
