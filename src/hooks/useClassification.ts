@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import convertPoseToVector, {
-  PoseCollectionStream,
-} from "../utils/convertPosetoVector";
+import convertPoseToVector from "../utils/convertPosetoVector";
+import { PoseCollectionStream } from "../types";
 import { ClassificationOptions, predictionResult } from "../types";
 
 export function useClassification(
