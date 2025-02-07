@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import convertPoseToVector, { Coordinate } from "../utils/convertPosetoVector";
+import convertPoseToVector, {
+  PoseCollectionStream,
+} from "../utils/convertPosetoVector";
 import { ClassificationOptions, predictionResult } from "../types";
 
 export function useClassification(
-  input: Coordinate[][] | [],
+  input: PoseCollectionStream | [],
   options: ClassificationOptions = {
     tolerance: 0.8,
     initClassification: "",
@@ -52,8 +54,8 @@ export function useClassification(
         setIsClassifying(true);
 
         nn.current.classify(convertedPose, (result: predictionResult) => {
-          console.log("result", result[0].label);
-          console.log("prediction object", result);
+          // console.log("result", result[0].label);
+          // console.log("prediction object", result);
 
           if (result[0].confidence > options.tolerance) {
             setClassification(result[0].label);
