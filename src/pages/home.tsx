@@ -1,5 +1,5 @@
 // import VideoPlayer from "../components/VideoPlayer";
-import { usePoseContext } from "@/context/posecontext/usePoseContext";
+import { usePoseContext } from "@/context/posecontext/use-pose-context";
 import useClassification from "@/hooks/use-classification";
 import WebcamLayout from "@/components/webcam-layout";
 import ActionButton from "@/components/action-button";

@@ -1,5 +1,5 @@
 import React from "react";
-import { PoseContext } from "./PoseContext";
+import { PoseContext } from "./pose-context";
 
 export const usePoseContext = () => {
   const context = React.useContext(PoseContext);
