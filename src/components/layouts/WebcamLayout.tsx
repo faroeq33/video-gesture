@@ -1,26 +1,26 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { forwardRef, RefObject } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { DrawingUtils, HandLandmarker } from "@mediapipe/tasks-vision";
 
 import Webcam from "react-webcam";
 import createHandLandmarker from "../../utils/createHandLandmarker";
-import Canvas from "../Canvas";
-import { Coordinate } from "../../utils/convertPosetoVector";
+import { PoseCollectionStream } from "../../types";
 
 function WebcamLayout({
   poseData,
   setPoseData,
 }: {
-  poseData: Coordinate[][] | [];
-  setPoseData: React.Dispatch<React.SetStateAction<Coordinate[][] | []>>;
+  poseData: PoseCollectionStream | [];
+  setPoseData: React.Dispatch<React.SetStateAction<PoseCollectionStream | []>>;
 }) {
   const landmarkerRef = useRef<HandLandmarker | null>(null);
   const drawingUtilsRef = useRef(null);
   const animationFrameId = useRef(null); // for canceling the animation frame
-  const [camera, setCamera] = useState(true);
+  // const [camera, setCamera] = useState(true);
 
-  const toggleCamera = () => {
-    setCamera((prevCamera) => !prevCamera);
-  };
+  // const toggleCamera = () => {
+  //   setCamera((prevCamera) => !prevCamera);
+  // };
 
   const videoConstraints = {
     width: 480,
@@ -45,22 +45,22 @@ function WebcamLayout({
 
   // Logic for drawing
   useEffect(() => {
-    // const canvasContext = canvasRef.current.getContext("2d");
-    // if (drawingUtilsRef.current) {
-    //   canvasContext.clearRect(0, 0, 480, 270);
-    //   for (const hand of poseData) {
-    //     drawingUtilsRef.current.drawConnectors(
-    //       hand,
-    //       HandLandmarker.HAND_CONNECTIONS,
-    //       { color: "#00FF00", lineWidth: 3 }
-    //     );
-    //     drawingUtilsRef.current.drawLandmarks(hand, {
-    //       radius: 2,
-    //       color: "#FF0000",
-    //       lineWidth: 2,
-    //     });
-    //   }
-    // }
+    const canvasContext = canvasRef.current.getContext("2d");
+    if (drawingUtilsRef.current) {
+      canvasContext.clearRect(0, 0, 480, 270);
+      for (const hand of poseData) {
+        drawingUtilsRef.current.drawConnectors(
+          hand,
+          HandLandmarker.HAND_CONNECTIONS,
+          { color: "#00FF00", lineWidth: 3 }
+        );
+        drawingUtilsRef.current.drawLandmarks(hand, {
+          radius: 2,
+          color: "#FF0000",
+          lineWidth: 2,
+        });
+      }
+    }
   }, [poseData]);
 
   const capture = useCallback(async () => {
@@ -134,5 +134,21 @@ function WebcamLayout({
     </>
   );
 }
+
+type CanvasProps = {
+  children?: React.ReactNode;
+  width: number;
+  height: number;
+};
+const Canvas = forwardRef(function Canvas(
+  props: CanvasProps,
+  ref: RefObject<HTMLCanvasElement>
+) {
+  return (
+    <canvas ref={ref} {...props}>
+      {props.children}
+    </canvas>
+  );
+});
 
 export default WebcamLayout;
