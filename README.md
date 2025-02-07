@@ -5,7 +5,7 @@ Een applicatie om je youtube videos te besturen met handgebaren. Dit project is 
 
 Hier zijn de beschikbare scripts die u kunt uitvoeren:
 
-- `npm run dev`: Start de Vite ontwikkelserver
+- `pnpm run dev`: Start de Vite ontwikkelserver
 
 ## huidige issues
 Full screen pose niet ondersteund, vanwege de volgende error:
