@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Coordinate } from "../../utils/convertPosetoVector";
+import { PoseCollectionStream } from "../../utils/convertPosetoVector";
 
 interface PoseContextType {
-  poseData: Coordinate[][] | [];
-  setPoseData: React.Dispatch<React.SetStateAction<Coordinate[][] | []>>;
+  poseData: PoseCollectionStream | [];
+  setPoseData: React.Dispatch<React.SetStateAction<PoseCollectionStream | []>>;
 }
 
 export const PoseContext = React.createContext<PoseContextType | undefined>(
@@ -13,7 +13,7 @@ export const PoseContext = React.createContext<PoseContextType | undefined>(
 export const PoseProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [poseData, setPoseData] = useState<Coordinate[][] | []>([]);
+  const [poseData, setPoseData] = useState<PoseCollectionStream | []>([]);
 
   return (
     <PoseContext.Provider
