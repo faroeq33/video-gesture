@@ -16,11 +16,6 @@ function WebcamLayout({
   const landmarkerRef = useRef<HandLandmarker | null>(null);
   const drawingUtilsRef = useRef(null);
   const animationFrameId = useRef(null); // for canceling the animation frame
-  // const [camera, setCamera] = useState(true);
-
-  // const toggleCamera = () => {
-  //   setCamera((prevCamera) => !prevCamera);
-  // };
 
   const videoConstraints = {
     width: 480,
