@@ -34,9 +34,9 @@ function Home() {
         <WebcamLayout poseData={poseData} setPoseData={setPoseData} />
         <h2 className="text-2xl">Instructions</h2>
         <p>Press play first before doing poses</p>
-        <p>Open your hand = pausing </p>
-        <p>Peacesign = fullscreen</p>
-        <p>Finger in front of the mouth = mute</p>
+        <p>Open your hand ✋🏿 = pausing </p>
+        <p>Peacesign ✌🏿️ = fullscreen</p>
+        <p>Finger in front of the mouth ☝🏿 = mute</p>
       </div>
 
       {/* <VideoPlayer classification={classification.classification} /> */}
