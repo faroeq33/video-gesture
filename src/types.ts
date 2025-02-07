@@ -14,3 +14,4 @@ export type Coordinate = {
   z: number;
   visibility: number;
 };
+export type PoseCollectionStream = Coordinate[][];
