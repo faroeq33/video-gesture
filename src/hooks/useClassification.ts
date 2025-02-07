@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Coordinate, convertPoseToVector } from "../utils/convertPosetoVector";
+import convertPoseToVector, { Coordinate } from "../utils/convertPosetoVector";
 import { ClassificationOptions, predictionResult } from "../types";
 
 export function useClassification(
@@ -14,15 +14,12 @@ export function useClassification(
     options.initClassification ?? ""
   ); // Does this classification need to be state?
 
-  const [isClassifying, setIsClassifying] = useState(
-    options.startClassifying || false
-  );
+  const [isClassifying, setIsClassifying] = useState(options.startClassifying);
 
   const nn = useRef(null);
 
   useEffect(() => {
     // @ts-expect-error - Property 'ml5' does not exist on type 'Window & typeof globalThis'.
-    // const ml5 = window.ml5;
     ml5.setBackend("webgl"); // Required for running on the browser
 
     // @ts-expect-error - Property 'ml5' does not exist on type 'Window & typeof globalThis'.
@@ -33,13 +30,7 @@ export function useClassification(
   }, []);
 
   useEffect(() => {
-    let convertedPose = [];
-    convertedPose = convertPoseToVector(input);
-
-    // const network = ml5.neuralNetwork({
-    //   task: "classification",
-    //   debug: true,
-    // });
+    const convertedPose = convertPoseToVector(input);
 
     const modelDetails = {
       model: "model/model.json",
@@ -61,8 +52,8 @@ export function useClassification(
         setIsClassifying(true);
 
         nn.current.classify(convertedPose, (result: predictionResult) => {
-          // console.log("result", result[0].label);
-          // console.log("prediction object", result);
+          console.log("result", result[0].label);
+          console.log("prediction object", result);
 
           if (result[0].confidence > options.tolerance) {
             setClassification(result[0].label);
