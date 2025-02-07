@@ -3,7 +3,7 @@ import convertPoseToVector from "../utils/convertPosetoVector";
 import { PoseCollectionStream } from "../types";
 import { ClassificationOptions, predictionResult } from "../types";
 
-export function useClassification(
+export default function useClassification(
   input: PoseCollectionStream | [],
   options: ClassificationOptions = {
     tolerance: 0.8,
