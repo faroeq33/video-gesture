@@ -1,6 +1,4 @@
-import { Coordinate } from "../types";
-export type PoseCollectionStream = Coordinate[][];
-
+import { PoseCollectionStream } from "../types";
 function convertPoseToVector(pose: PoseCollectionStream): number[] {
   //   console.log("input pose: ", pose);
   if (pose.length === 0) {
