@@ -1,6 +1,6 @@
 // import VideoPlayer from "../components/VideoPlayer";
 import MyButton from "../components/buttons/MyButton";
-import { usePoseContext } from "../context/PoseContext";
+import { usePoseContext } from "../context/posecontext/usePoseContext";
 import { useClassification } from "../hooks/useClassification";
 // import { useClassification } from "../hooks/useClassification";
 import WebcamLayout from "../components/layouts/WebcamLayout";
@@ -8,7 +8,6 @@ import WebcamLayout from "../components/layouts/WebcamLayout";
 function Home() {
   const { poseData, setPoseData } = usePoseContext();
 
-  // ts-expect-error - Property 'ml5' does not exist on type 'Window & typeof globalThis'.
   const classification = useClassification(poseData, {
     tolerance: 0.8,
   });
