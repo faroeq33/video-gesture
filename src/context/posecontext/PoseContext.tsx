@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { PoseCollectionStream } from "../../types";
+import { PoseCollectionStream } from "@/types";
 
 interface PoseContextType {
   poseData: PoseCollectionStream | [];

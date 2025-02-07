@@ -1,11 +1,11 @@
 // import VideoPlayer from "../components/VideoPlayer";
-import { usePoseContext } from "../context/posecontext/usePoseContext";
-import useClassification from "../hooks/useClassification";
-import WebcamLayout from "../components/layouts/WebcamLayout";
-import ActionButton from "../components/buttons/action-button";
-import VideoPlayer from "../components/VideoPlayer";
+import { usePoseContext } from "@/context/posecontext/usePoseContext";
+import useClassification from "@/hooks/use-classification";
+import WebcamLayout from "@/components/webcam-layout";
+import ActionButton from "@/components/action-button";
+import VideoPlayer from "@/components/video-player";
 
-function Home() {
+export default function Home() {
   const { poseData, setPoseData } = usePoseContext();
 
   const classification = useClassification(poseData, {
@@ -44,5 +44,3 @@ function Home() {
     </div>
   );
 }
-
-export default Home;

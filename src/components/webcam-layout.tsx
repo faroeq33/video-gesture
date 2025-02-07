@@ -3,10 +3,10 @@ import { useCallback, useEffect, useRef } from "react";
 import { DrawingUtils, HandLandmarker } from "@mediapipe/tasks-vision";
 
 import Webcam from "react-webcam";
-import createHandLandmarker from "../../utils/createHandLandmarker";
-import { PoseCollectionStream } from "../../types";
+import createHandLandmarker from "@/utils/create-handlandmarker";
+import { PoseCollectionStream } from "@/types";
 
-function WebcamLayout({
+export default function WebcamLayout({
   poseData,
   setPoseData,
 }: {
@@ -145,5 +145,3 @@ const Canvas = forwardRef(function Canvas(
     </canvas>
   );
 });
-
-export default WebcamLayout;

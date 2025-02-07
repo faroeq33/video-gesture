@@ -1,4 +1,4 @@
-import { PoseCollectionStream } from "../types";
+import { PoseCollectionStream } from "@/types";
 function convertPoseToVector(pose: PoseCollectionStream): number[] {
   //   console.log("input pose: ", pose);
   if (pose.length === 0) {

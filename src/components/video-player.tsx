@@ -1,8 +1,8 @@
 import { useState } from "react";
 import YouTube, { YouTubePlayer, YouTubeProps } from "react-youtube";
-import ActionButton from "./buttons/action-button";
+import ActionButton from "@/components/action-button";
 
-function VideoPlayer(props: { classification: string }) {
+export default function VideoPlayer(props: { classification: string }) {
   //   const [isReady, setIsReady] = useState(false);
   // console.log(YouTube.PlayerState);
   const [player, setPlayer] = useState<YouTubePlayer>(null);
@@ -90,4 +90,3 @@ function VideoPlayer(props: { classification: string }) {
     </>
   );
 }
-export default VideoPlayer;

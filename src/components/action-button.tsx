@@ -4,7 +4,7 @@ interface Params {
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-function ActionButton(props: Params) {
+export default function ActionButton(props: Params) {
   return (
     <button
       type={props.type || "button"}
@@ -15,5 +15,3 @@ function ActionButton(props: Params) {
     </button>
   );
 }
-
-export default ActionButton;
