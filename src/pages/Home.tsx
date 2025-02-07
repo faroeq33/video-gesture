@@ -1,9 +1,8 @@
 // import VideoPlayer from "../components/VideoPlayer";
-import MyButton from "../components/buttons/MyButton";
 import { usePoseContext } from "../context/posecontext/usePoseContext";
 import { useClassification } from "../hooks/useClassification";
-// import { useClassification } from "../hooks/useClassification";
 import WebcamLayout from "../components/layouts/WebcamLayout";
+import ActionButton from "../components/buttons/action-button";
 
 function Home() {
   const { poseData, setPoseData } = usePoseContext();
@@ -15,7 +14,7 @@ function Home() {
   return (
     <div className="grid grid-cols-2 gap-4">
       <div className="p-4 prediction">
-        <MyButton
+        <ActionButton
           onClick={() => {
             classification.toggle();
             console.log("toggled classification");
@@ -24,7 +23,7 @@ function Home() {
           {classification.isClassifying
             ? "Stop classifying"
             : "Start  classifying"}
-        </MyButton>
+        </ActionButton>
       </div>
       <div className="my-8 text-4xl text-black classification display">
         <span className="italic font-bold">
