@@ -8,3 +8,9 @@ export type ClassificationOptions = {
   initClassification?: string;
   startClassifying?: boolean;
 };
+export type Coordinate = {
+  x: number;
+  y: number;
+  z: number;
+  visibility: number;
+};

@@ -1,13 +1,7 @@
-export type Coordinate = {
-  x: number;
-  y: number;
-  z: number;
-  visibility: number;
-};
+import { Coordinate } from "../types";
+export type PoseCollectionStream = Coordinate[][];
 
-// export type PoseCollectionStream = Coordinate[][];
-
-export function convertPoseToVector(pose: Coordinate[][]): number[] {
+function convertPoseToVector(pose: PoseCollectionStream): number[] {
   //   console.log("input pose: ", pose);
   if (pose.length === 0) {
     return [];
@@ -21,3 +15,5 @@ export function convertPoseToVector(pose: Coordinate[][]): number[] {
   //   console.log("output pose: ", convertedPose);
   return convertedPose;
 }
+
+export default convertPoseToVector;
