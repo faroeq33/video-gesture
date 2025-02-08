@@ -114,7 +114,6 @@ export default function WebcamLayout({
   return (
     <>
       <section className="videosection">
-        <button>toggle camera</button>
         <Webcam
           width={videoConstraints.width}
           height={videoConstraints.height}
