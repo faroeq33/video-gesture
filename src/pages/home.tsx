@@ -1,9 +1,9 @@
-// import VideoPlayer from "../components/VideoPlayer";
 import { usePoseContext } from "@/context/posecontext/use-pose-context";
-import useClassification from "@/hooks/use-classification";
+import useClassification from "@/hooks/use-nn-classification";
 import WebcamLayout from "@/components/webcam-layout";
 import ActionButton from "@/components/action-button";
 import VideoPlayer from "@/components/video-player";
+import { PauseIcon, PlayIcon } from "lucide-react";
 
 export default function Home() {
   const { poseData, setPoseData } = usePoseContext();
@@ -18,12 +18,19 @@ export default function Home() {
         <ActionButton
           onClick={() => {
             classification.toggle();
-            console.log("toggled classification");
           }}
         >
-          {classification.isClassifying
-            ? "Stop classifying"
-            : "Start  classifying"}
+          {classification.isClassifying ? (
+            <div className="flex items-center">
+              <PauseIcon />
+              Stop classifying
+            </div>
+          ) : (
+            <div className="flex items-center">
+              <PlayIcon />
+              Start classifying
+            </div>
+          )}
         </ActionButton>
       </div>
       <div className="my-8 text-4xl text-black classification display">

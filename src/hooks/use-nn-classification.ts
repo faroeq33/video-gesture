@@ -70,6 +70,7 @@ export default function useClassification(
     isClassifying,
     toggle: () => {
       setIsClassifying(!isClassifying);
+      console.log("toggled classification");
     },
     classification,
   };
