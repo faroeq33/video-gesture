@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import YouTube, { YouTubePlayer, YouTubeProps } from "react-youtube";
-import ActionButton from "@/components/action-button";
+// import ActionButton from "@/components/action-button";
 
 export default function VideoPlayer(props: { classification: string }) {
   //   const [isReady, setIsReady] = useState(false);
@@ -25,12 +25,8 @@ export default function VideoPlayer(props: { classification: string }) {
 
   /* The <iframe> (and video player) will replace this <div> tag.*/
 
-  const mute = () => {
-    player.current.mute();
-  };
-
-  const fullScreen = () => {
-    const iframe = player.current.getIframe();
+  const fullScreen = async () => {
+    const iframe = await player.current.getIframe();
 
     const requestFullScreen =
       // @ts-expect-error - Property 'requestFullScreen' does not exist on type 'HTMLIFrameElement'.
@@ -44,28 +40,26 @@ export default function VideoPlayer(props: { classification: string }) {
     }
   };
 
-  const pauseVideo = () => {
-    player.current.pauseVideo();
-  };
-
   function handlePoseEvent(classification: string) {
     // Maybe i can apply debounce/throttle here
     switch (classification) {
       case "mute":
-        // console.log("thing muted");
-        mute();
+        console.log("entered mute logic");
+        player.current.mute();
         break;
       case "fullscreen":
-        console.log(
-          "not implemented yet, because of security reasons, see projects readme"
-        );
+        // console.log(
+        //   "not implemented yet, because of security reasons, see projects readme"
+        // );
+        console.log("entered fullscreen");
 
-        // fullScreen();
+        fullScreen();
         break;
       case "pause":
         // fire pause event
         console.log("thing paused");
-        pauseVideo();
+
+        player.current.pauseVideo();
         break;
 
       default:
@@ -86,8 +80,8 @@ export default function VideoPlayer(props: { classification: string }) {
         opts={options}
         onReady={onPlayerReady}
       />{" "}
-      <ActionButton onClick={mute}>mute</ActionButton>
-      <ActionButton onClick={fullScreen}>fullscreen</ActionButton>
+      {/* <ActionButton onClick={mute}>mute</ActionButton> */}
+      {/* <ActionButton onClick={fullScreen}>fullscreen</ActionButton> */}
     </>
   );
 }

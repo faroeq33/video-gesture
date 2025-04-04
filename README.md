@@ -1,4 +1,5 @@
 # video-gesture
+
 Een applicatie om je youtube videos te besturen met handgebaren. Dit project is gemaakt voor het vak prg8.
 
 ## Scripts
@@ -7,9 +8,7 @@ Hier zijn de beschikbare scripts die u kunt uitvoeren:
 
 - `pnpm dev`: Start de Vite ontwikkelserver
 
-## huidige issues
-Full screen pose niet ondersteund, vanwege de volgende error:
-![alt text](image.png)
+## Huidige issues
 
 ## Afhankelijkheden
 
