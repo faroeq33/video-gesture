@@ -5,6 +5,7 @@ import ActionButton from "@/components/action-button";
 import VideoPlayer from "@/components/video-player";
 import { PauseIcon, PlayIcon } from "lucide-react";
 import { useDebounce } from "use-debounce";
+import Footer from "@/components/footer";
 
 export default function Home() {
   const { poseData, setPoseData } = usePoseContext();
@@ -63,6 +64,7 @@ export default function Home() {
       </div>
 
       <VideoPlayer classification={debouncedClassification} />
+      <Footer />
     </div>
   );
 }
