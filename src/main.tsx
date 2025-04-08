@@ -2,7 +2,6 @@ import Home from "@/pages/home";
 import { PoseProvider } from "@/context/posecontext/pose-context";
 import ReactDOM from "react-dom/client";
 import "./assets/index.css";
-// import App from "./app";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   // <React.StrictMode>
