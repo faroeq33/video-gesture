@@ -3,9 +3,7 @@
 Een applicatie om je youtube videos te besturen met handgebaren. Dit project is gemaakt voor het vak prg8.
 
 ## Scripts
-
-Hier zijn de beschikbare scripts die u kunt uitvoeren:
-
+Na het clonen van dit project kun je dit project opstarten middels:
 - `pnpm dev`: Start de Vite ontwikkelserver
 
 ## Huidige issues
