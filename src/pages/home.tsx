@@ -10,12 +10,12 @@ import Footer from "@/components/footer";
 export default function Home() {
   const { poseData, setPoseData } = usePoseContext();
 
-  const classification = useClassification(poseData, {
+  const classifier = useClassification(poseData, {
     tolerance: 0.8,
   });
 
   const [debouncedClassification] = useDebounce(
-    classification.classification,
+    classifier.classification,
     300,
     {
       leading: false,
@@ -27,10 +27,10 @@ export default function Home() {
       <div className="p-4 prediction">
         <ActionButton
           onClick={() => {
-            classification.toggle();
+            classifier.toggle();
           }}
         >
-          {classification.isClassifying ? (
+          {classifier.isClassifying ? (
             <div className="flex items-center">
               <PauseIcon />
               Stop classifying
@@ -47,7 +47,7 @@ export default function Home() {
         <span className="italic font-bold">
           <p>
             Actual value:
-            {classification.classification || "No poses recognized"}
+            {classifier.classification || "No poses recognized"}
           </p>
           <p>Debounce value: {debouncedClassification}</p>
         </span>
