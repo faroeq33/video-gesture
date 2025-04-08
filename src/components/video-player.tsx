@@ -75,7 +75,7 @@ export default function VideoPlayer(props: { classification: string }) {
     <>
       <YouTube
         className="w-full h-96"
-        videoId="UNw-3mOEN-0"
+        videoId="xwtdhWltSIg"
         title="How to read multi-tariff smart meter EMDI ES-10B"
         opts={options}
         onReady={onPlayerReady}
