@@ -31,8 +31,8 @@ export default function WebcamLayout({
     const canvasContext = canvasRef.current.getContext("2d");
     if (!drawingUtilsRef.current) {
       drawingUtilsRef.current = new DrawingUtils(canvasContext);
-      // console.log("DrawingUtils created");
-      // console.log(drawingUtilsRef.current);
+      console.debug("DrawingUtils created");
+      console.debug(drawingUtilsRef.current);
     }
 
     resizeCanvasToDisplaySize(canvasRef.current);
