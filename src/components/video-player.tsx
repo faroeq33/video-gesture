@@ -4,8 +4,6 @@ import { throttle } from "../utils/throttle";
 // import ActionButton from "@/components/action-button";
 
 export default function VideoPlayer(props: { classification: string }) {
-  //   const [isReady, setIsReady] = useState(false);
-  // console.log(YouTube.PlayerState);
   const callCount = useRef(0);
   const player = useRef<YouTubePlayer | null>(null);
 
