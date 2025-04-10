@@ -10,8 +10,6 @@
 		- Then unmute using mouse
 	- Expected outcome
 		- Unmutes after doing manual unmute clicking
-	how to test:
-	- Stops muting after hand is off screen
 
 ## Optional UX improvements:
 - notification when webcam is not toggled on
