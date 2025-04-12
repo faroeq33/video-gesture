@@ -14,8 +14,8 @@ export default function VideoPlayer(props: { classification: string }) {
   };
 
   const options: YouTubeProps["opts"] = {
-    height: "390",
-    width: "640",
+    width: "480",
+    height: "270",
     // height: "390",
     // width: "640",
 
@@ -102,7 +102,7 @@ export default function VideoPlayer(props: { classification: string }) {
   return (
     <>
       <YouTube
-        className="w-full h-96"
+        className="w-full "
         videoId="xwtdhWltSIg"
         title="How to read multi-tariff smart meter EMDI ES-10B"
         opts={options}
