@@ -51,14 +51,12 @@ export default function Home() {
           </ActionButton>
           <Popover>
             <PopoverTrigger>
-              {/* <Button className="my-4"> */}
               <ul className="flex items-center justify-around hover:cursor-pointer">
                 <li>
                   <Menu />
                 </li>
                 <li>Instructions</li>
               </ul>
-              {/* </Button> */}
             </PopoverTrigger>
             <PopoverContent>
               <ul className="space-y-2 list-disc list-inside ">
@@ -79,7 +77,6 @@ export default function Home() {
               Current pose:
               {" " + classifier.classification || " No poses recognized"}
             </Paragraph>
-            {/* <p>Debounce value: {debouncedClassification}</p> */}
           </span>
         </div>
         <div className="">
