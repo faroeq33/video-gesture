@@ -3,10 +3,14 @@
 Een applicatie om je youtube videos te besturen met handgebaren. Dit project is gemaakt voor het vak prg8.
 
 ## Scripts
+
 Na het clonen van dit project kun je dit project opstarten middels:
+
 - `pnpm dev`: Start de Vite ontwikkelserver
 
 ## Huidige issues
+
+Als je de video handmatig wilt unmuten met de muis moet je tijdelijk een andere pose doen, zodat je de video met de muis weer kunt bedienen.
 
 ## Afhankelijkheden
 
