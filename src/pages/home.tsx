@@ -6,7 +6,6 @@ import VideoPlayer from "@/components/video-player";
 import { PauseIcon, PlayIcon } from "lucide-react";
 import { useDebounce } from "use-debounce";
 import Footer from "@/components/footer";
-import { Button } from "@/components/ui/button";
 
 export default function Home() {
   const { poseData, setPoseData } = usePoseContext();
