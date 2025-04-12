@@ -10,6 +10,11 @@
 		- Then unmute using mouse
 	- Expected outcome
 		- Unmutes after doing manual unmute clicking
+	Current issue with current solution, I can't mute anymore after callcount is more than 10,
 
+  ## Optional UX improvements:
+  - Display a notification to the user when the webcam is not toggled on, so
+    that they know that the app can't use the webcam if they haven't given
+    permission or if the webcam is not available.
 ## Optional UX improvements:
 - notification when webcam is not toggled on
