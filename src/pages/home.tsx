@@ -23,48 +23,57 @@ export default function Home() {
   );
 
   return (
-    <div className="grid grid-cols-2 gap-4">
-      <div className="p-4 prediction">
-        <ActionButton
-          onClick={() => {
-            classifier.toggle();
-          }}
-        >
-          {classifier.isClassifying ? (
-            <div className="flex items-center">
-              <PauseIcon />
-              Stop classifying
-            </div>
-          ) : (
-            <div className="flex items-center">
-              <PlayIcon />
-              Start classifying
-            </div>
-          )}
-        </ActionButton>
-      </div>
-      <div className="my-8 text-4xl text-black classification display">
-        <span className="italic font-bold">
-          <p>
-            Actual value:
-            {classifier.classification || "No poses recognized"}
-          </p>
-          <p>Debounce value: {debouncedClassification}</p>
-        </span>
-      </div>
-      <div className="p-4 instructions">
-        <WebcamLayout poseData={poseData} setPoseData={setPoseData} />
-        <h2 className="text-2xl">Instructions</h2>
-        <p>Press play first before doing poses</p>
-        <p>
-          Open your <b>RIGHT</b> hand ✋🏿 = pausing{" "}
-        </p>
-        <p>Peacesign ✌🏿️ = fullscreen</p>
-        <p>Finger in front of the mouth ☝🏿 = mute</p>
+    <>
+      <div className="grid grid-cols-2 gap-4">
+        <div className="p-4 prediction">
+          <ActionButton
+            onClick={() => {
+              classifier.toggle();
+            }}
+          >
+            {classifier.isClassifying ? (
+              <div className="flex items-center">
+                <PauseIcon />
+                Stop classifying
+              </div>
+            ) : (
+              <div className="flex items-center">
+                <PlayIcon />
+                Start classifying
+              </div>
+            )}
+          </ActionButton>
+        </div>
+        <div className="my-8 text-4xl text-black classification display">
+          <span className="italic font-bold">
+            <p>
+              Actual value:
+              {classifier.classification || "No poses recognized"}
+            </p>
+            <p>Debounce value: {debouncedClassification}</p>
+          </span>
+        </div>
+        <div className="p-4">
+          <WebcamLayout poseData={poseData} setPoseData={setPoseData} />
+          <div className="text-yellow-700 bg-yellow-100 rounded-md border-l-4 border-yellow-500 shadow-md card">
+            <ul className="p-4 space-y-2 list-disc list-inside">
+              <h2 className="mb-2 text-2xl font-bold">Instructions</h2>
+              <li>Press play first before doing poses</li>
+              <li>
+                Open your <b>RIGHT</b> hand ✋🏿 = pausing
+              </li>
+              <li>Peace sign ✌🏿️ = fullscreen</li>
+              <li>Finger in front of the mouth ☝🏿 = mute</li>
+            </ul>
+          </div>
+        </div>
+
+        <VideoPlayer classification={debouncedClassification} />
       </div>
 
-      <VideoPlayer classification={debouncedClassification} />
-      <Footer />
-    </div>
+      <div className="grid">
+        <Footer />
+      </div>
+    </>
   );
 }
