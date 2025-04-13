@@ -31,19 +31,19 @@ export default function Home() {
   return (
     <>
       <div className="container grid grid-cols-2 gap-4 mx-auto w-8/10 ">
-        <div className="p-4 prediction">
+        <div className="gap-4 pt-4 prediction">
           <ActionButton
             onClick={() => {
               classifier.toggle();
             }}
           >
             {classifier.isClassifying ? (
-              <div className="flex items-center">
+              <div className="flex items-center ">
                 <PauseIcon />
                 Stop classifying
               </div>
             ) : (
-              <div className="flex items-center">
+              <div className="flex items-center ">
                 <PlayIcon />
                 Start classifying
               </div>
@@ -70,6 +70,12 @@ export default function Home() {
               </ul>
             </PopoverContent>
           </Popover>
+
+          <h1 className="text-xl text-accent-foreground">
+            An app for people who want to control music through gestures, for
+            example while driving, or when when you don't feel like using a
+            mouse!
+          </h1>
         </div>
         <div className="my-8 text-4xl classification display">
           <span className="italic font-bold">
