@@ -81,7 +81,12 @@ export default function Home() {
           <span className="italic font-bold">
             <Paragraph>
               Current pose:
-              {" " + classifier.classification || " No poses recognized"}
+              {classifier.classification.length > 1 || (
+                <span className=" text-muted-foreground">
+                  {" "}
+                  No poses recognized
+                </span>
+              )}
             </Paragraph>
           </span>
         </div>
