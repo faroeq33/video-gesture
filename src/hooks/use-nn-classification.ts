@@ -7,13 +7,11 @@ export default function useClassification(
   input: PoseCollectionStream | [],
   options: ClassificationOptions = {
     tolerance: 0.8,
-    initClassification: "",
     startClassifying: false,
   }
 ) {
-  const [classification, setClassification] = useState(
-    options.initClassification ?? ""
-  ); // Does this classification need to be state?
+  const NOPOSESDETECTED = "";
+  const [classification, setClassification] = useState(NOPOSESDETECTED);
 
   const [isClassifying, setIsClassifying] = useState(options.startClassifying);
 
@@ -39,6 +37,8 @@ export default function useClassification(
       weights: "model/model.weights.bin",
     };
 
+    let isActive = true;
+
     nn.current.load(modelDetails, onModelLoaded);
 
     function onModelLoaded() {
@@ -48,25 +48,27 @@ export default function useClassification(
 
       if (convertedPose.length <= 0) {
         // By setting classification to an empty string, it prevens spamming comands to the youtube api
-        setClassification("");
+        setClassification(NOPOSESDETECTED);
         return;
       }
       try {
         setIsClassifying(true);
 
         nn.current.classify(convertedPose, (result: predictionResult) => {
-          // console.log("result", result[0].label);
-          // console.log("prediction object", result);
+          // if (!isActive) return;
 
           if (result[0].confidence > options.tolerance) {
             setClassification(result[0].label);
           }
         });
-        return;
       } catch (error) {
         return console.log("error", error);
       }
     }
+
+    return () => {
+      isActive = false;
+    };
   }, [input, isClassifying, options.tolerance]);
 
   return {

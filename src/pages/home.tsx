@@ -4,7 +4,6 @@ import WebcamLayout from "@/components/webcam-layout";
 import ActionButton from "@/components/action-button";
 import VideoPlayer from "@/components/video-player";
 import { Menu, PauseIcon, PlayIcon } from "lucide-react";
-import { useDebounce } from "use-debounce";
 import Footer from "@/components/footer";
 import Paragraph from "@/components/paragraph";
 import {
@@ -19,14 +18,6 @@ export default function Home() {
   const classifier = useClassification(poseData, {
     tolerance: 0.8,
   });
-
-  const [debouncedClassification] = useDebounce(
-    classifier.classification,
-    300,
-    {
-      leading: false,
-    }
-  );
 
   return (
     <>
@@ -78,13 +69,15 @@ export default function Home() {
           </h1>
         </div>
         <div className="my-8 text-4xl classification display">
-          <span className="italic font-bold">
+          <span className="italic font-bold capitalize">
             <Paragraph>
               Current pose:
-              {classifier.classification.length > 1 || (
-                <span className=" text-muted-foreground">
+              {classifier.classification.length > 1 ? (
+                ` ${classifier.classification}`
+              ) : (
+                <span className="text-muted-foreground">
                   {" "}
-                  No poses recognized
+                  No poses recognized...
                 </span>
               )}
             </Paragraph>
@@ -94,7 +87,7 @@ export default function Home() {
           <WebcamLayout poseData={poseData} setPoseData={setPoseData} />
         </div>
 
-        <VideoPlayer classification={debouncedClassification} />
+        <VideoPlayer classification={classifier.classification} />
       </div>
 
       <div className="grid my-10 bg-indigo-300/20">
