@@ -47,6 +47,8 @@ export default function useClassification(
       }
 
       if (convertedPose.length <= 0) {
+        // By setting classification to an empty string, it prevens spamming comands to the youtube api
+        setClassification("");
         return;
       }
       try {
@@ -60,8 +62,9 @@ export default function useClassification(
             setClassification(result[0].label);
           }
         });
+        return;
       } catch (error) {
-        console.log("error", error);
+        return console.log("error", error);
       }
     }
   }, [input, isClassifying, options.tolerance]);
@@ -69,8 +72,11 @@ export default function useClassification(
   return {
     isClassifying,
     toggle: () => {
+      // When isClassifying is true it sets to false & vice versa
       setIsClassifying(!isClassifying);
       console.log("toggled classification");
+
+      setClassification("");
     },
     classification,
   };
