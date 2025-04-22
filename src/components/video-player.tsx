@@ -1,10 +1,9 @@
 import { useRef } from "react";
 import YouTube, { YouTubePlayer, YouTubeProps } from "react-youtube";
-import { throttle } from "../utils/throttle";
 // import ActionButton from "@/components/action-button";
 
 export default function VideoPlayer(props: { classification: string }) {
-  const callCount = useRef(0);
+  // const callCount = useRef(0);
   const player = useRef<YouTubePlayer | null>(null);
 
   const onPlayerReady: YouTubeProps["onReady"] = (event) => {
@@ -43,16 +42,7 @@ export default function VideoPlayer(props: { classification: string }) {
   };
 
   function handlePoseEvent(classification: string) {
-    // Maybe i can apply debounce/throttle here
     if (!player.current) return;
-
-    // const muteIsThrottled = throttle({
-    //   callCount: callCount.current,
-    // });
-
-    // if (muteIsThrottled) {
-    //   return;
-    // }
 
     switch (classification) {
       case "mute":
@@ -60,9 +50,9 @@ export default function VideoPlayer(props: { classification: string }) {
           const mute = async () => {
             try {
               player.current?.mute();
-              console.log(`callcount is: ${callCount.current}`);
-              callCount.current = callCount.current + 1;
-              console.log("callCount after incrementing: " + callCount.current);
+              // console.log(`callcount is: ${callCount.current}`);
+              // callCount.current = callCount.current + 1;
+              // console.log("callCount after incrementing: " + callCount.current);
             } catch (err) {
               console.error(err);
             }

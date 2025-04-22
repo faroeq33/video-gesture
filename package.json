@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "test": "vitest",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -24,11 +23,9 @@
     "react-youtube": "^10.1.0",
     "tailwind-merge": "^3.2.0",
     "tailwindcss": "^4.1.3",
-    "tw-animate-css": "^1.2.5",
-    "use-debounce": "^10.0.4"
+    "tw-animate-css": "^1.2.5"
   },
   "devDependencies": {
-    "@types/jest": "^29.5.14",
     "@types/node": "^22.14.1",
     "@types/react": "^18.3.20",
     "@types/react-dom": "^18.3.6",
@@ -37,7 +34,6 @@
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.3",
     "typescript": "^5.8.3",
-    "vite": "^5.4.18",
-    "vitest": "^3.1.1"
+    "vite": "^5.4.18"
   }
 }
