@@ -2,12 +2,12 @@ import Home from "@/pages/home";
 import { PoseProvider } from "@/context/posecontext/pose-context";
 import ReactDOM from "react-dom/client";
 import "./assets/index.css";
-import { StrictMode } from "react";
+import React from "react";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <StrictMode>
+  <React.StrictMode>
     <PoseProvider>
       <Home />
     </PoseProvider>
-  </StrictMode>
+  </React.StrictMode>
 );
