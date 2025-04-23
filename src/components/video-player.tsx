@@ -45,27 +45,27 @@ export default function VideoPlayer(props: { classification: string }) {
     if (!player.current) return;
 
     switch (classification) {
-      case "mute":
-        {
-          const mute = async () => {
-            try {
-              player.current?.mute();
-              // console.log(`callcount is: ${callCount.current}`);
-              // callCount.current = callCount.current + 1;
-              // console.log("callCount after incrementing: " + callCount.current);
-            } catch (err) {
-              console.error(err);
-            }
-          };
-          mute();
-        }
-
+      case "mute": {
+        const mute = async () => {
+          try {
+            player.current?.mute();
+            // console.log(`callcount is: ${callCount.current}`);
+            // callCount.current = callCount.current + 1;
+            // console.log("callCount after incrementing: " + callCount.current);
+          } catch (err) {
+            console.error(err);
+          }
+        };
+        mute();
         break;
-      case "fullscreen":
+      }
+
+      case "fullscreen": {
         fullScreen();
-
         break;
-      case "pause":
+      }
+
+      case "pause": {
         const pause = async () => {
           try {
             player.current?.pauseVideo();
@@ -78,8 +78,11 @@ export default function VideoPlayer(props: { classification: string }) {
         };
         pause();
         break;
-      default:
+      }
+
+      default: {
         break;
+      }
     }
   }
 
