@@ -1,3 +1,4 @@
+import reactHooks from "eslint-plugin-react-hooks";
 import js from "@eslint/js";
 import globals from "globals";
 import tseslint from "typescript-eslint";
@@ -16,6 +17,7 @@ export default defineConfig([
   },
   tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
+  reactHooks.configs["recommended-latest"],
   {
     rules: {
       // ...

@@ -7,6 +7,7 @@ Een applicatie om je youtube videos te besturen met handgebaren. Dit project is 
 Na het clonen van dit project kun je dit project opstarten middels:
 
 - `pnpm dev`: Start de Vite ontwikkelserver
+- (optioneel): bekijken regels van bestaande eslint configuratie pnpx @eslint/config-inspector@latest
 
 ## Huidige issues
 

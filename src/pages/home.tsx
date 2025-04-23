@@ -87,7 +87,7 @@ export default function Home() {
           <WebcamLayout poseData={poseData} setPoseData={setPoseData} />
         </div>
 
-        <VideoPlayer classification={classifier.classification} />
+        <VideoPlayer {...classifier} />
       </div>
 
       <div className="grid my-10 bg-indigo-300/20">
