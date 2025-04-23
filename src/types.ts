@@ -15,3 +15,9 @@ export type Coordinate = {
   visibility: number;
 };
 export type PoseCollectionStream = Coordinate[][];
+
+export type Classifier = {
+  isClassifying: boolean;
+  classification: string;
+  toggle: () => void;
+};

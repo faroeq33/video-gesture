@@ -1,8 +1,9 @@
+import { Classifier } from "@/types";
 import { useRef } from "react";
 import YouTube, { YouTubePlayer, YouTubeProps } from "react-youtube";
 // import ActionButton from "@/components/action-button";
 
-export default function VideoPlayer(props: { classification: string }) {
+export default function VideoPlayer(props: Classifier) {
   // const callCount = useRef(0);
   const player = useRef<YouTubePlayer | null>(null);
 
