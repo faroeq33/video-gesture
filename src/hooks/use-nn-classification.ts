@@ -24,7 +24,7 @@ export default function useClassification(
     // @ts-expect-error - Property 'ml5' does not exist on type 'Window & typeof globalThis'.
     nn.current = ml5.neuralNetwork({
       task: "classification",
-      debug: true,
+      debug: process.env.NODE_ENV === "production" ? false : true,
     });
   }, []);
 
@@ -73,6 +73,7 @@ export default function useClassification(
 
   return {
     isClassifying,
+    classification,
     toggle: () => {
       // When isClassifying is true it sets to false & vice versa
       setIsClassifying(!isClassifying);
@@ -80,6 +81,5 @@ export default function useClassification(
 
       setClassification("");
     },
-    classification,
   };
 }
