@@ -7,7 +7,7 @@ function convertPoseToVector(pose: PoseCollectionStream): number[] {
   }
   const convertedPose = pose[0]
     .map((point) => {
-      return [point.x, point.y, point.z];
+      return [point.x, point.y];
     })
     .flat();
 
